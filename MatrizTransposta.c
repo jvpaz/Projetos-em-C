@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-int **Transcreve(int **p, int lar, int alt);
+int **Transcreve(int **p, int alt, int lar);
 void insereValores(int **p, int alt, int lar);
+void liberarMemoria(int **p, int alt);
 
 int main(void){
 
@@ -18,28 +19,38 @@ int main(void){
         matriz[i] = (int*)malloc(largura * sizeof(int));
     }
 
-    insereValores(matriz, largura, altura);
-    transposta = Transcreve(matriz, largura, altura);
+    insereValores(matriz, altura, largura);
+    transposta = Transcreve(matriz, altura, largura);
 
+    printf("Original\n");
     for (int i = 0; i < altura; i++)
     {
-        for (int j = 0; j < largura; j++)
-        {
-            printf("%d ", transposta[i][j]);
-        }
-        printf("\t");
         for (int j = 0; j < largura; j++)
         {
             printf("%d ", matriz[i][j]);
         }
         printf("\n");
     }
+
+    printf("Transposta\n");
+    for (int i = 0; i < largura; i++)
+    {
+        for (int j = 0; j < altura; j++)
+        {
+            printf("%d ", transposta[i][j]);
+        }
+        printf("\n");
+    }
+    
+
+    liberarMemoria(matriz, altura);
+    liberarMemoria(transposta, largura);
     
 
     return 0;
 }
 
-int **Transcreve(int **p, int lar, int alt)
+int **Transcreve(int **p, int alt, int lar)
 {
     int **temp = (int**)malloc(lar * sizeof(int*));
     for (int i = 0; i < lar; i++)
@@ -70,4 +81,13 @@ void insereValores(int **p, int alt, int lar)
         }
         
     }  
+}
+
+void liberarMemoria(int **p, int alt)
+{
+    for (int i = 0; i < alt; i++)
+    {
+        free(p[i]);
+    }
+    free(p);
 }
